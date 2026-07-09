@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="活動管理平台 Event Management Dashboard MVP">
+  <title>活動管理平台｜Event Management Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="app-header__brand">
+        <span class="app-header__brand-main">活動管理平台</span>
+        <span class="app-header__brand-sub">Event Management Dashboard</span>
+      </div>
+      <div class="app-header__actions">
+        <button class="app-header__reset-button" id="reset-data-button" type="button">
+          <span>重置資料</span>
+          <span>Reset Data</span>
+        </button>
+        <div class="app-header__version">v2.0.0</div>
+      </div>
+    </header>
+
+    <div class="app-body">
+      <aside class="sidebar" aria-label="主要功能">
+        <nav class="sidebar__nav">
+          <a class="sidebar__link sidebar__link--active" href="#dashboard-home" data-section="dashboard-home">儀表板（Dashboard）</a>
+          <a class="sidebar__link" href="#exhibition-module" data-section="exhibition-module">活動（Events）</a>
+          <a class="sidebar__link" href="#task-module" data-section="task-module">任務（Tasks）</a>
+          <a class="sidebar__link" href="#document-module" data-section="document-module">文件（Documents）</a>
+          <!-- Settings reserved for future version -->
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <section class="page-heading" id="dashboard-home" aria-labelledby="page-title">
+          <h1 id="page-title">
+            <span class="page-heading__title-main">活動管理平台</span>
+            <span class="page-heading__title-sub">Event Management Dashboard</span>
+          </h1>
+          <p>目前管理案例：海外參展（Currently managing: Overseas Exhibition）</p>
+        </section>
+
+        <section class="current-exhibition" id="current-exhibition-panel" aria-live="polite">
+          <div>
+            <span class="current-exhibition__label">目前活動（Current Event）</span>
+            <strong class="current-exhibition__name" id="current-exhibition-name">尚未選擇活動（No Event Selected）</strong>
+            <p class="current-exhibition__meta" id="current-exhibition-meta">資料載入後會自動選取第一筆活動。</p>
+          </div>
+          <span class="status-badge current-exhibition__badge status-badge--planning" id="current-exhibition-status">待確認</span>
+        </section>
+
+        <section class="dashboard-home" aria-labelledby="dashboard-home-title">
+          <section class="today-focus" aria-labelledby="today-focus-title">
+            <div class="today-focus__header">
+              <div>
+                <h2 id="today-focus-title">今日焦點（Today's Focus）</h2>
+                <p>快速查看今天最需要優先處理的活動、任務與文件。</p>
+              </div>
+              <p class="today-focus__message" id="today-focus-message" hidden></p>
+            </div>
+
+            <div class="today-focus__grid" aria-label="今日焦點 Today's Focus">
+              <article class="today-focus-card today-focus-card--overdue">
+                <span class="today-focus-card__label">逾期任務</span>
+                <span class="today-focus-card__sub">Overdue Tasks</span>
+                <strong class="today-focus-card__value" id="focus-overdue-tasks">0</strong>
+                <p class="today-focus-card__description">需要立即處理</p>
+                <div class="today-focus-card__sources" id="focus-overdue-sources"></div>
+              </article>
+              <article class="today-focus-card today-focus-card--today">
+                <span class="today-focus-card__label">今日到期</span>
+                <span class="today-focus-card__sub">Due Today</span>
+                <strong class="today-focus-card__value" id="focus-due-today">0</strong>
+                <p class="today-focus-card__description">今天需完成</p>
+                <div class="today-focus-card__sources" id="focus-due-today-sources"></div>
+              </article>
+              <article class="today-focus-card today-focus-card--soon">
+                <span class="today-focus-card__label">即將到期</span>
+                <span class="today-focus-card__sub">Due Soon</span>
+                <strong class="today-focus-card__value" id="focus-due-soon">0</strong>
+                <p class="today-focus-card__description">未來 3 天內到期</p>
+                <div class="today-focus-card__sources" id="focus-due-soon-sources"></div>
+              </article>
+              <article class="today-focus-card today-focus-card--documents">
+                <span class="today-focus-card__label">待處理文件</span>
+                <span class="today-focus-card__sub">Documents in Review</span>
+                <strong class="today-focus-card__value" id="focus-documents-review">0</strong>
+                <p class="today-focus-card__description">等待審核確認</p>
+                <div class="today-focus-card__sources" id="focus-documents-review-sources"></div>
+              </article>
+            </div>
+          </section>
+
+          <div class="section-header">
+            <h2 id="dashboard-home-title">總覽摘要（Dashboard Summary）</h2>
+            <p>快速查看活動、任務與文件的整體狀態。</p>
+          </div>
+
+          <div class="dashboard-summary-grid" aria-label="總覽摘要 Dashboard module summary">
+            <article class="dashboard-summary-card">
+              <span class="dashboard-summary-card__label">活動（Events）</span>
+              <strong class="dashboard-summary-card__value" id="home-exhibition-total">0</strong>
+              <p class="dashboard-summary-card__status" id="home-exhibition-status">規劃中 0｜進行中 0｜已完成 0</p>
+              <a class="dashboard-summary-card__action" href="#exhibition-module" data-section="exhibition-module">進入活動（Events）</a>
+            </article>
+            <article class="dashboard-summary-card">
+              <span class="dashboard-summary-card__label">任務（Tasks）</span>
+              <strong class="dashboard-summary-card__value" id="home-task-total">0</strong>
+              <p class="dashboard-summary-card__status" id="home-task-status">待辦 0｜進行中 0｜已完成 0｜封鎖 0</p>
+              <a class="dashboard-summary-card__action" href="#task-module" data-section="task-module">進入任務（Tasks）</a>
+            </article>
+            <article class="dashboard-summary-card">
+              <span class="dashboard-summary-card__label">文件（Documents）</span>
+              <strong class="dashboard-summary-card__value" id="home-document-total">0</strong>
+              <p class="dashboard-summary-card__status" id="home-document-status">草稿 0｜審核中 0｜已核准 0｜已封存 0</p>
+              <a class="dashboard-summary-card__action" href="#document-module" data-section="document-module">進入文件（Documents）</a>
+            </article>
+          </div>
+
+          <div class="dashboard-recent-updates" aria-labelledby="recent-updates-title">
+            <div class="dashboard-recent-updates__header">
+              <div>
+                <h3 id="recent-updates-title">近期更新（Recent Updates）</h3>
+                <p>快速查看近期需要注意的活動、任務與文件。</p>
+              </div>
+            </div>
+            <div class="dashboard-recent-grid" aria-label="近期更新 Recent updates summary">
+              <article class="dashboard-recent-card">
+                <div class="dashboard-recent-card__header">
+                  <h4>近期活動（Recent Events）</h4>
+                  <a href="#exhibition-module" data-section="exhibition-module">查看全部</a>
+                </div>
+                <div class="dashboard-recent-list" id="recent-exhibitions-list">
+                  <p class="dashboard-recent-empty">資料載入中</p>
+                </div>
+              </article>
+              <article class="dashboard-recent-card">
+                <div class="dashboard-recent-card__header">
+                  <h4>近期任務（Recent Tasks）</h4>
+                  <a href="#task-module" data-section="task-module">查看全部</a>
+                </div>
+                <div class="dashboard-recent-list" id="recent-tasks-list">
+                  <p class="dashboard-recent-empty">資料載入中</p>
+                </div>
+              </article>
+              <article class="dashboard-recent-card">
+                <div class="dashboard-recent-card__header">
+                  <h4>近期文件（Recent Documents）</h4>
+                  <a href="#document-module" data-section="document-module">查看全部</a>
+                </div>
+                <div class="dashboard-recent-list" id="recent-documents-list">
+                  <p class="dashboard-recent-empty">資料載入中</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="exhibition-module" aria-labelledby="exhibition-table-title">
+          <div class="panel__header">
+            <div>
+              <h2 id="exhibition-table-title">活動清單（Event List）</h2>
+              <p>目前列出重點活動專案。</p>
+            </div>
+          </div>
+
+          <form class="exhibition-form" id="exhibition-form" aria-label="活動管理表單 Event management form">
+            <input type="hidden" id="exhibition-edit-id" value="">
+            <div class="exhibition-form__grid">
+              <div class="exhibition-form__field exhibition-form__field--name">
+                <label for="exhibition-name-input">活動名稱（Event Name）</label>
+                <input type="text" id="exhibition-name-input" placeholder="輸入活動名稱" required>
+              </div>
+              <div class="exhibition-form__field">
+                <label for="exhibition-country-input">國家（Country）</label>
+                <input type="text" id="exhibition-country-input" placeholder="輸入國家">
+              </div>
+              <div class="exhibition-form__field">
+                <label for="exhibition-city-input">城市（City）</label>
+                <input type="text" id="exhibition-city-input" placeholder="輸入城市">
+              </div>
+              <div class="exhibition-form__field">
+                <label for="exhibition-start-date-input">開始日期（Start Date）</label>
+                <input type="date" id="exhibition-start-date-input">
+              </div>
+              <div class="exhibition-form__field">
+                <label for="exhibition-end-date-input">結束日期（End Date）</label>
+                <input type="date" id="exhibition-end-date-input">
+              </div>
+              <div class="exhibition-form__field">
+                <label for="exhibition-status-input">狀態（Status）</label>
+                <select id="exhibition-status-input">
+                  <option value="planning" selected>規劃中</option>
+                  <option value="active">進行中</option>
+                  <option value="done">已完成</option>
+                </select>
+              </div>
+              <div class="exhibition-form__field">
+                <label for="exhibition-owner-input">負責人（Owner）</label>
+                <input type="text" id="exhibition-owner-input" placeholder="輸入負責人" value="Campbell">
+              </div>
+              <div class="exhibition-form__field">
+                <label for="exhibition-venue-input">地點（Venue）</label>
+                <input type="text" id="exhibition-venue-input" placeholder="輸入 Venue / 地點">
+              </div>
+              <div class="exhibition-form__field">
+                <label for="exhibition-booth-input">攤位（Booth）</label>
+                <input type="text" id="exhibition-booth-input" placeholder="輸入攤位">
+              </div>
+              <div class="exhibition-form__field exhibition-form__field--objective">
+                <label for="exhibition-objective-input">活動目的（Event Objective）</label>
+                <textarea id="exhibition-objective-input" rows="3" placeholder="輸入活動目的"></textarea>
+              </div>
+            </div>
+            <div class="exhibition-form__actions">
+              <button class="exhibition-button exhibition-button--primary" type="submit" id="exhibition-submit-button">新增活動（Add Event）</button>
+              <button class="exhibition-button exhibition-button--secondary" type="button" id="exhibition-cancel-edit-button" hidden>取消編輯（Cancel Edit）</button>
+            </div>
+          </form>
+
+          <section class="summary-grid summary-grid--module" aria-label="活動統計摘要 Event summary">
+            <article class="summary-card">
+              <span class="summary-card__label">活動總數（Total Events）</span>
+              <strong class="summary-card__value" id="summary-total">0</strong>
+            </article>
+            <article class="summary-card">
+              <span class="summary-card__label">規劃中活動（Planning Events）</span>
+              <strong class="summary-card__value" id="summary-planning">0</strong>
+            </article>
+            <article class="summary-card">
+              <span class="summary-card__label">進行中活動（Active Events）</span>
+              <strong class="summary-card__value" id="summary-active">0</strong>
+            </article>
+            <article class="summary-card">
+              <span class="summary-card__label">已完成活動（Completed Events）</span>
+              <strong class="summary-card__value" id="summary-done">0</strong>
+            </article>
+          </section>
+
+          <div class="filter-controls" aria-label="活動篩選 Event filters">
+            <div class="filter-field filter-field--search">
+              <label for="exhibition-search">關鍵字搜尋（Search）</label>
+              <input
+                type="search"
+                id="exhibition-search"
+                placeholder="搜尋活動名稱、國家、城市或負責人"
+              >
+            </div>
+            <div class="filter-field">
+              <label for="exhibition-status-filter">狀態篩選（Status Filter）</label>
+              <select id="exhibition-status-filter">
+                <option value="">全部（All）</option>
+                <option value="planning">規劃中</option>
+                <option value="active">進行中</option>
+                <option value="done">已完成</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">活動名稱（Event Name）</th>
+                  <th scope="col">國家/城市（Country / City）</th>
+                  <th scope="col">活動日期（Event Date）</th>
+                  <th scope="col">狀態（Status）</th>
+                  <th scope="col">負責人（Owner）</th>
+                  <th scope="col">操作（Action）</th>
+                </tr>
+              </thead>
+              <tbody id="exhibition-table-body">
+                <tr>
+                  <td colspan="6">
+                    <div class="empty-state">
+                      <p class="empty-state__title">資料載入中</p>
+                      <p class="empty-state__description">正在讀取活動資料，請稍候。</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="detail-panel" id="exhibition-detail">
+            <div class="empty-state">
+              <p class="empty-state__title">尚未選擇活動（No Event Selected）</p>
+              <p class="empty-state__description">請從上方活動清單選擇一筆活動查看詳細資訊。</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="task-module" id="task-module" aria-labelledby="task-module-title">
+          <div class="section-header">
+            <div>
+              <h2 id="task-module-title">任務管理（Tasks）</h2>
+              <p>追蹤活動相關準備任務。</p>
+            </div>
+            <div class="task-header-summary" aria-label="任務工作量摘要 Task workload summary">
+              <span id="task-header-total">任務 0</span>
+              <span id="task-header-done">已完成 0</span>
+              <span id="task-header-pending">待處理 0</span>
+            </div>
+          </div>
+          <div class="task-summary-grid" aria-label="任務摘要 Task summary">
+            <article class="task-summary-card">
+              <span class="task-summary-card__label">任務總數（Total Tasks）</span>
+              <strong class="task-summary-card__value" id="task-summary-total">0</strong>
+            </article>
+            <article class="task-summary-card">
+              <span class="task-summary-card__label">待辦（To Do）</span>
+              <strong class="task-summary-card__value" id="task-summary-todo">0</strong>
+            </article>
+            <article class="task-summary-card">
+              <span class="task-summary-card__label">進行中（In Progress）</span>
+              <strong class="task-summary-card__value" id="task-summary-in-progress">0</strong>
+            </article>
+            <article class="task-summary-card">
+              <span class="task-summary-card__label">已完成（Completed）</span>
+              <strong class="task-summary-card__value" id="task-summary-done">0</strong>
+            </article>
+            <article class="task-summary-card">
+              <span class="task-summary-card__label">封鎖（Blocked）</span>
+              <strong class="task-summary-card__value" id="task-summary-blocked">0</strong>
+            </article>
+          </div>
+          <form class="task-form" id="task-form" aria-label="任務管理表單 Task management form">
+            <input type="hidden" id="task-edit-id" value="">
+            <div class="task-form__grid">
+              <div class="task-form__field task-form__field--title">
+                <label for="task-title-input">任務名稱（Task Title）</label>
+                <input type="text" id="task-title-input" placeholder="輸入任務名稱" required>
+              </div>
+              <div class="task-form__field">
+                <label for="task-due-date-input">到期日（Due Date）</label>
+                <input type="date" id="task-due-date-input" required>
+              </div>
+              <div class="task-form__field">
+                <label for="task-priority-input">優先順序（Priority）</label>
+                <select id="task-priority-input">
+                  <option value="high">高（High）</option>
+                  <option value="medium" selected>中（Medium）</option>
+                  <option value="low">低（Low）</option>
+                </select>
+              </div>
+              <div class="task-form__field">
+                <label for="task-owner-input">負責單位（Owner）</label>
+                <select id="task-owner-input">
+                  <option value="行銷" selected>行銷</option>
+                  <option value="業務">業務</option>
+                  <option value="研發">研發</option>
+                  <option value="生產">生產</option>
+                  <option value="品保">品保</option>
+                </select>
+              </div>
+              <div class="task-form__field">
+                <label for="task-status-input">狀態（Status）</label>
+                <select id="task-status-input">
+                  <option value="todo" selected>待辦（Todo）</option>
+                  <option value="in_progress">進行中（In Progress）</option>
+                  <option value="done">已完成（Done）</option>
+                  <option value="blocked">封鎖（Blocked）</option>
+                </select>
+              </div>
+            </div>
+            <div class="task-form__actions">
+              <button class="task-button task-button--primary" type="submit" id="task-submit-button">新增任務（Add Task）</button>
+              <button class="task-button task-button--secondary" type="button" id="task-cancel-edit-button" hidden>取消編輯（Cancel Edit）</button>
+            </div>
+          </form>
+          <div class="filter-controls task-filter-controls" aria-label="任務篩選 Task filters">
+            <div class="filter-field filter-field--search">
+              <label for="task-search">任務搜尋（Task Search）</label>
+              <input type="search" id="task-search" placeholder="搜尋任務名稱...">
+            </div>
+            <div class="filter-field">
+              <label for="task-status-filter">任務狀態（Task Status）</label>
+              <select id="task-status-filter">
+                <option value="">全部（All）</option>
+                <option value="todo">待辦（Todo）</option>
+                <option value="in_progress">進行中（In Progress）</option>
+                <option value="done">已完成（Done）</option>
+                <option value="blocked">封鎖（Blocked）</option>
+              </select>
+            </div>
+          </div>
+          <div id="task-list" class="task-list">任務載入中...</div>
+        </section>
+
+        <section class="document-module" id="document-module" aria-labelledby="document-module-title">
+          <div class="section-header">
+            <h2 id="document-module-title">文件管理（Documents）</h2>
+            <p>追蹤活動相關文件與參考資料。</p>
+          </div>
+          <div class="document-summary-grid" aria-label="文件統計">
+            <article class="document-summary-card">
+              <span class="document-summary-card__label">文件總數（Total Documents）</span>
+              <strong class="document-summary-card__value" id="document-summary-total">0</strong>
+            </article>
+            <article class="document-summary-card">
+              <span class="document-summary-card__label">草稿（Draft）</span>
+              <strong class="document-summary-card__value" id="document-summary-draft">0</strong>
+            </article>
+            <article class="document-summary-card">
+              <span class="document-summary-card__label">審核中（In Review）</span>
+              <strong class="document-summary-card__value" id="document-summary-review">0</strong>
+            </article>
+            <article class="document-summary-card">
+              <span class="document-summary-card__label">已核准（Approved）</span>
+              <strong class="document-summary-card__value" id="document-summary-approved">0</strong>
+            </article>
+            <article class="document-summary-card">
+              <span class="document-summary-card__label">已封存（Archived）</span>
+              <strong class="document-summary-card__value" id="document-summary-archived">0</strong>
+            </article>
+          </div>
+          <form class="document-form" id="document-form" aria-label="文件管理表單 Document management form">
+            <input type="hidden" id="document-edit-id" value="">
+            <div class="document-form__grid">
+              <div class="document-form__field document-form__field--title">
+                <label for="document-title-input">文件標題（Document Title）</label>
+                <input type="text" id="document-title-input" placeholder="輸入文件標題" required>
+              </div>
+              <div class="document-form__field">
+                <label for="document-type-input">文件類型（Document Type）</label>
+                <select id="document-type-input">
+                  <option value="market_research">市場研究</option>
+                  <option value="budget">預算</option>
+                  <option value="sales_list">銷售名單</option>
+                  <option value="catalog">型錄</option>
+                  <option value="follow_up">後續追蹤</option>
+                  <option value="logistics">物流文件</option>
+                </select>
+              </div>
+              <div class="document-form__field">
+                <label for="document-status-input">文件狀態（Document Status）</label>
+                <select id="document-status-input">
+                  <option value="draft" selected>草稿</option>
+                  <option value="review">審核中</option>
+                  <option value="approved">已核准</option>
+                  <option value="archived">已封存</option>
+                </select>
+              </div>
+              <div class="document-form__field">
+                <label for="document-owner-input">負責人（Owner）</label>
+                <input type="text" id="document-owner-input" placeholder="輸入負責人" value="Campbell">
+              </div>
+              <div class="document-form__field document-form__field--url">
+                <label for="document-url-input">連結（URL）</label>
+                <input type="text" id="document-url-input" placeholder="docs/example.pdf">
+              </div>
+              <div class="document-form__field document-form__field--description">
+                <label for="document-description-input">說明（Description）</label>
+                <textarea id="document-description-input" rows="3" placeholder="輸入文件說明"></textarea>
+              </div>
+            </div>
+            <div class="document-form__actions">
+              <button class="document-button document-button--primary" type="submit" id="document-submit-button">新增文件（Add Document）</button>
+              <button class="document-button document-button--secondary" type="button" id="document-cancel-edit-button" hidden>取消編輯（Cancel Edit）</button>
+            </div>
+          </form>
+          <div class="filter-controls document-filter-controls" aria-label="文件篩選 Document filters">
+            <div class="filter-field filter-field--search">
+              <label for="document-search">文件搜尋（Document Search）</label>
+              <input
+                type="search"
+                id="document-search"
+                placeholder="搜尋文件標題、類型、負責人、說明或 URL"
+              >
+            </div>
+            <div class="filter-field">
+              <label for="document-status-filter">文件狀態（Document Status）</label>
+              <select id="document-status-filter">
+                <option value="">全部（All）</option>
+                <option value="draft">草稿</option>
+                <option value="review">審核中</option>
+                <option value="approved">已核准</option>
+                <option value="archived">已封存</option>
+              </select>
+            </div>
+            <div class="filter-field">
+              <label for="document-type-filter">文件類型（Document Type）</label>
+              <select id="document-type-filter">
+                <option value="">全部類型（All Types）</option>
+                <option value="market_research">市場研究</option>
+                <option value="budget">預算</option>
+                <option value="sales_list">銷售名單</option>
+                <option value="catalog">型錄</option>
+                <option value="follow_up">後續追蹤</option>
+                <option value="logistics">物流文件</option>
+              </select>
+            </div>
+          </div>
+          <div id="document-list" class="document-list">文件載入中...</div>
+        </section>
+
+        <footer class="app-footer">
+          <span id="last-updated">最後更新（Last Updated）: --</span>
+        </footer>
+      </main>
+    </div>
+  </div>
+
+  <button class="back-to-top-button" id="back-to-top" type="button" aria-label="回到頁面頂端">
+    回到頂端
+  </button>
+
+  <script src="js/app.js" defer></script>
+</body>
+</html>

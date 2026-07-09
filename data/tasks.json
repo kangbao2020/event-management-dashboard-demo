@@ -1,0 +1,68 @@
+[
+  {
+    "taskId": 1,
+    "exhibitionId": 1,
+    "title": "確認 IDS Cologne 攤位申請時程",
+    "category": "booth",
+    "owner": "Campbell",
+    "status": "todo",
+    "priority": "high",
+    "dueDate": "2026-09-30",
+    "note": "確認主辦單位申請截止日、攤位規格與費用資訊。"
+  },
+  {
+    "taskId": 2,
+    "exhibitionId": 1,
+    "title": "蒐集牙科植體競品參展名單",
+    "category": "marketing",
+    "owner": "Marketing Team",
+    "status": "in_progress",
+    "priority": "medium",
+    "dueDate": "2026-10-15",
+    "note": "彙整主要植體品牌、展示重點與通路合作資訊。"
+  },
+  {
+    "taskId": 3,
+    "exhibitionId": 2,
+    "title": "整理歐洲扣件潛在客戶清單",
+    "category": "sales",
+    "owner": "Sales Team",
+    "status": "in_progress",
+    "priority": "high",
+    "dueDate": "2026-11-10",
+    "note": "優先整理建築螺絲、高性能扣件與 OEM/ODM 相關客戶。"
+  },
+  {
+    "taskId": 4,
+    "exhibitionId": 2,
+    "title": "準備 Fastener Fair 展前型錄資料",
+    "category": "document",
+    "owner": "Marketing Team",
+    "status": "todo",
+    "priority": "medium",
+    "dueDate": "2026-12-05",
+    "note": "確認英文型錄、產品規格表與公司簡介是否需要更新。"
+  },
+  {
+    "taskId": 5,
+    "exhibitionId": 3,
+    "title": "彙整 AEEDC Dubai 代理商洽談紀錄",
+    "category": "sales",
+    "owner": "Sales Team",
+    "status": "done",
+    "priority": "medium",
+    "dueDate": "2027-02-20",
+    "note": "整理展後名片、洽談重點與後續追蹤優先順序。"
+  },
+  {
+    "taskId": 6,
+    "exhibitionId": 3,
+    "title": "確認中東展會物流與樣品回收狀態",
+    "category": "logistics",
+    "owner": "Operations Team",
+    "status": "blocked",
+    "priority": "low",
+    "dueDate": "2027-02-28",
+    "note": "等待物流商回覆樣品回運文件與費用明細。"
+  }
+]

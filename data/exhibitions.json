@@ -1,0 +1,41 @@
+[
+  {
+    "id": 1,
+    "name": "IDS Cologne",
+    "country": "德國",
+    "city": "科隆",
+    "startDate": "2027-03-16",
+    "endDate": "2027-03-20",
+    "status": "planning",
+    "owner": "Campbell",
+    "venue": "Koelnmesse",
+    "booth": "待確認",
+    "objective": "觀察牙科植體與醫療器材市場趨勢，蒐集競品與通路資訊。"
+  },
+  {
+    "id": 2,
+    "name": "Fastener Fair Global",
+    "country": "德國",
+    "city": "斯圖加特",
+    "startDate": "2027-03-23",
+    "endDate": "2027-03-25",
+    "status": "active",
+    "owner": "Sales Team",
+    "venue": "Messe Stuttgart",
+    "booth": "待確認",
+    "objective": "開發歐洲扣件市場潛在客戶，觀察建築螺絲與高性能扣件競爭趨勢。"
+  },
+  {
+    "id": 3,
+    "name": "AEEDC Dubai",
+    "country": "阿聯",
+    "city": "杜拜",
+    "startDate": "2027-02-09",
+    "endDate": "2027-02-11",
+    "status": "done",
+    "owner": "Marketing Team",
+    "venue": "Dubai World Trade Centre",
+    "booth": "待確認",
+    "objective": "拓展中東牙科市場代理合作機會，建立品牌曝光與潛在客戶名單。"
+  }
+]

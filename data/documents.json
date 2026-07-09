@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "exhibitionId": 1,
+    "title": "IDS Cologne 展前市場調查摘要",
+    "type": "market_research",
+    "status": "review",
+    "owner": "Marketing Team",
+    "updatedAt": "2026-10-20",
+    "description": "彙整牙科植體、醫療器材與主要競品於歐洲市場的展前觀察重點。",
+    "url": "docs/ids-cologne-market-research.pdf"
+  },
+  {
+    "id": 2,
+    "exhibitionId": 1,
+    "title": "IDS Cologne 參展預算表",
+    "type": "budget",
+    "status": "draft",
+    "owner": "Campbell",
+    "updatedAt": "2026-10-28",
+    "description": "記錄攤位費、差旅、展示品、印刷物與展前推廣預估費用。",
+    "url": "docs/ids-cologne-budget.xlsx"
+  },
+  {
+    "id": 3,
+    "exhibitionId": 2,
+    "title": "Fastener Fair Global 客戶開發名單",
+    "type": "sales_list",
+    "status": "approved",
+    "owner": "Sales Team",
+    "updatedAt": "2026-11-18",
+    "description": "整理歐洲扣件市場潛在客戶、代理商與 OEM/ODM 合作對象。",
+    "url": "docs/fastener-fair-customer-list.xlsx"
+  },
+  {
+    "id": 4,
+    "exhibitionId": 2,
+    "title": "扣件產品英文型錄確認稿",
+    "type": "catalog",
+    "status": "review",
+    "owner": "Marketing Team",
+    "updatedAt": "2026-12-12",
+    "description": "確認建築螺絲、高性能扣件與公司服務介紹之展前型錄內容。",
+    "url": "docs/fastener-product-catalog.pdf"
+  },
+  {
+    "id": 5,
+    "exhibitionId": 3,
+    "title": "AEEDC Dubai 展後名片與洽談紀錄",
+    "type": "follow_up",
+    "status": "approved",
+    "owner": "Sales Team",
+    "updatedAt": "2027-02-18",
+    "description": "彙整中東牙科市場代理商名單、洽談內容與後續追蹤優先順序。",
+    "url": "docs/aeedc-dubai-follow-up.xlsx"
+  },
+  {
+    "id": 6,
+    "exhibitionId": 3,
+    "title": "AEEDC Dubai 物流文件歸檔",
+    "type": "logistics",
+    "status": "archived",
+    "owner": "Operations Team",
+    "updatedAt": "2027-03-02",
+    "description": "保存樣品寄送、回運、報關與物流費用相關文件。",
+    "url": "docs/aeedc-dubai-logistics.zip"
+  }
+]
