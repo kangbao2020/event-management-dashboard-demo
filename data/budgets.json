@@ -1,0 +1,57 @@
+[
+  {
+    "id": 1,
+    "exhibitionId": 1,
+    "title": "展位費",
+    "category": "booth",
+    "estimatedAmount": 300000,
+    "actualAmount": 300000,
+    "status": "paid",
+    "note": "IDS Cologne 展位租用與報名費用。",
+    "updatedAt": "2026-07-01"
+  },
+  {
+    "id": 2,
+    "exhibitionId": 1,
+    "title": "機票與住宿",
+    "category": "travel",
+    "estimatedAmount": 180000,
+    "actualAmount": 165000,
+    "status": "paid",
+    "note": "參展人員往返機票與展期住宿費用。",
+    "updatedAt": "2026-07-03"
+  },
+  {
+    "id": 3,
+    "exhibitionId": 1,
+    "title": "展品物流",
+    "category": "logistics",
+    "estimatedAmount": 90000,
+    "actualAmount": 0,
+    "status": "planned",
+    "note": "展品運送、報關與現場配送預估費用。",
+    "updatedAt": "2026-07-05"
+  },
+  {
+    "id": 4,
+    "exhibitionId": 1,
+    "title": "展位設計與輸出",
+    "category": "marketing",
+    "estimatedAmount": 120000,
+    "actualAmount": 115000,
+    "status": "paid",
+    "note": "展位視覺設計、輸出與行銷物料製作費用。",
+    "updatedAt": "2026-07-08"
+  },
+  {
+    "id": 5,
+    "exhibitionId": 1,
+    "title": "其他費用",
+    "category": "other",
+    "estimatedAmount": 30000,
+    "actualAmount": 0,
+    "status": "planned",
+    "note": "預留未分類之參展相關支出。",
+    "updatedAt": "2026-07-10"
+  }
+]
