@@ -1,0 +1,82 @@
+[
+  {
+    "id": "document-template-overseas-exhibition-001",
+    "templateId": "template-overseas-exhibition",
+    "title": "參展申請資料",
+    "type": "logistics",
+    "owner": "Marketing Team",
+    "defaultStatus": "draft",
+    "relativeDueDays": -180,
+    "sortOrder": 1
+  },
+  {
+    "id": "document-template-overseas-exhibition-002",
+    "templateId": "template-overseas-exhibition",
+    "title": "展位確認資料",
+    "type": "logistics",
+    "owner": "Marketing Team",
+    "defaultStatus": "draft",
+    "relativeDueDays": -150,
+    "sortOrder": 2
+  },
+  {
+    "id": "document-template-overseas-exhibition-003",
+    "templateId": "template-overseas-exhibition",
+    "title": "機票資料",
+    "type": "logistics",
+    "owner": "Operations Team",
+    "defaultStatus": "draft",
+    "relativeDueDays": -120,
+    "sortOrder": 3
+  },
+  {
+    "id": "document-template-overseas-exhibition-004",
+    "templateId": "template-overseas-exhibition",
+    "title": "飯店資料",
+    "type": "logistics",
+    "owner": "Operations Team",
+    "defaultStatus": "draft",
+    "relativeDueDays": -120,
+    "sortOrder": 4
+  },
+  {
+    "id": "document-template-overseas-exhibition-005",
+    "templateId": "template-overseas-exhibition",
+    "title": "展位設計稿",
+    "type": "catalog",
+    "owner": "Marketing Team",
+    "defaultStatus": "draft",
+    "relativeDueDays": -60,
+    "sortOrder": 5
+  },
+  {
+    "id": "document-template-overseas-exhibition-006",
+    "templateId": "template-overseas-exhibition",
+    "title": "展品與文宣清單",
+    "type": "catalog",
+    "owner": "Marketing Team",
+    "defaultStatus": "draft",
+    "relativeDueDays": -45,
+    "sortOrder": 6
+  },
+  {
+    "id": "document-template-overseas-exhibition-007",
+    "templateId": "template-overseas-exhibition",
+    "title": "物流與報關文件",
+    "type": "logistics",
+    "owner": "Operations Team",
+    "defaultStatus": "draft",
+    "relativeDueDays": -30,
+    "sortOrder": 7
+  },
+  {
+    "id": "document-template-overseas-exhibition-008",
+    "templateId": "template-overseas-exhibition",
+    "title": "展後成果報告",
+    "type": "follow_up",
+    "owner": "Marketing Team",
+    "defaultStatus": "draft",
+    "relativeDueDays": 14,
+    "sortOrder": 8
+  }
+]

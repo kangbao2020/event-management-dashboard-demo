@@ -1,0 +1,228 @@
+[
+  {
+    "id": "template-overseas-exhibition",
+    "name": "海外展覽標準範本",
+    "description": "適用於一般海外參展活動",
+    "eventType": "Exhibition",
+    "dateBasis": "endDate",
+    "isActive": true,
+    "taskTemplates": [
+      {
+        "id": "task-template-overseas-exhibition-001",
+        "templateId": "template-overseas-exhibition",
+        "title": "確認參展目標與預算",
+        "description": "確認本次參展目的、預算範圍與內部核准方向。",
+        "owner": "行銷",
+        "priority": "medium",
+        "defaultStatus": "todo",
+        "relativeDueDays": -360,
+        "sortOrder": 1
+      },
+      {
+        "id": "task-template-overseas-exhibition-002",
+        "templateId": "template-overseas-exhibition",
+        "title": "完成展位報名",
+        "description": "完成主辦單位展位報名流程，確認攤位申請資料已送出。",
+        "owner": "行銷",
+        "priority": "medium",
+        "defaultStatus": "todo",
+        "relativeDueDays": -360,
+        "sortOrder": 2
+      },
+      {
+        "id": "task-template-overseas-exhibition-003",
+        "templateId": "template-overseas-exhibition",
+        "title": "確認參展人員",
+        "description": "確認參展人員名單、角色分工與出差需求。",
+        "owner": "行銷",
+        "priority": "medium",
+        "defaultStatus": "todo",
+        "relativeDueDays": -150,
+        "sortOrder": 3
+      },
+      {
+        "id": "task-template-overseas-exhibition-004",
+        "templateId": "template-overseas-exhibition",
+        "title": "完成機票訂購",
+        "description": "確認航班需求並完成參展人員機票訂購。",
+        "owner": "行銷",
+        "priority": "medium",
+        "defaultStatus": "todo",
+        "relativeDueDays": -150,
+        "sortOrder": 4
+      },
+      {
+        "id": "task-template-overseas-exhibition-005",
+        "templateId": "template-overseas-exhibition",
+        "title": "完成飯店訂房",
+        "description": "確認住宿需求並完成參展期間飯店訂房。",
+        "owner": "行銷",
+        "priority": "medium",
+        "defaultStatus": "todo",
+        "relativeDueDays": -150,
+        "sortOrder": 5
+      },
+      {
+        "id": "task-template-overseas-exhibition-006",
+        "templateId": "template-overseas-exhibition",
+        "title": "確認展位設計需求",
+        "description": "確認展位設計方向、展示重點與製作需求。",
+        "owner": "行銷",
+        "priority": "medium",
+        "defaultStatus": "todo",
+        "relativeDueDays": -60,
+        "sortOrder": 6
+      },
+      {
+        "id": "task-template-overseas-exhibition-007",
+        "templateId": "template-overseas-exhibition",
+        "title": "完成展品與文宣清單",
+        "description": "彙整展品、型錄、文宣品與現場使用物料清單。",
+        "owner": "行銷",
+        "priority": "medium",
+        "defaultStatus": "todo",
+        "relativeDueDays": -14,
+        "sortOrder": 7
+      },
+      {
+        "id": "task-template-overseas-exhibition-008",
+        "templateId": "template-overseas-exhibition",
+        "title": "完成展品寄送",
+        "description": "確認展品包裝、物流安排與寄送狀態。",
+        "owner": "行銷",
+        "priority": "medium",
+        "defaultStatus": "todo",
+        "relativeDueDays": -14,
+        "sortOrder": 8
+      },
+      {
+        "id": "task-template-overseas-exhibition-009",
+        "templateId": "template-overseas-exhibition",
+        "title": "完成參展前確認",
+        "description": "確認展前待辦事項、文件、物料與現場聯絡資訊。",
+        "owner": "行銷",
+        "priority": "medium",
+        "defaultStatus": "todo",
+        "relativeDueDays": -14,
+        "sortOrder": 9
+      },
+      {
+        "id": "task-template-overseas-exhibition-010",
+        "templateId": "template-overseas-exhibition",
+        "title": "執行現場參展",
+        "description": "依參展計畫執行現場接待、展示與客戶互動作業。",
+        "owner": "行銷",
+        "priority": "medium",
+        "defaultStatus": "todo",
+        "relativeDueDays": 0,
+        "sortOrder": 10
+      },
+      {
+        "id": "task-template-overseas-exhibition-011",
+        "templateId": "template-overseas-exhibition",
+        "title": "完成展後名單整理",
+        "description": "整理展後名片、洽談紀錄與潛在客戶名單。",
+        "owner": "行銷",
+        "priority": "medium",
+        "defaultStatus": "todo",
+        "relativeDueDays": 7,
+        "sortOrder": 11
+      },
+      {
+        "id": "task-template-overseas-exhibition-012",
+        "templateId": "template-overseas-exhibition",
+        "title": "完成展後追蹤與檢討",
+        "description": "完成展後追蹤安排，彙整檢討重點與改善建議。",
+        "owner": "行銷",
+        "priority": "medium",
+        "defaultStatus": "todo",
+        "relativeDueDays": 7,
+        "sortOrder": 12
+      }
+    ],
+    "documentTemplates": [
+      {
+        "id": "document-template-overseas-exhibition-001",
+        "templateId": "template-overseas-exhibition",
+        "title": "參展申請資料",
+        "type": "logistics",
+        "owner": "Marketing Team",
+        "defaultStatus": "draft",
+        "relativeDueDays": -180,
+        "sortOrder": 1
+      },
+      {
+        "id": "document-template-overseas-exhibition-002",
+        "templateId": "template-overseas-exhibition",
+        "title": "展位確認資料",
+        "type": "logistics",
+        "owner": "Marketing Team",
+        "defaultStatus": "draft",
+        "relativeDueDays": -150,
+        "sortOrder": 2
+      },
+      {
+        "id": "document-template-overseas-exhibition-003",
+        "templateId": "template-overseas-exhibition",
+        "title": "機票資料",
+        "type": "logistics",
+        "owner": "Operations Team",
+        "defaultStatus": "draft",
+        "relativeDueDays": -120,
+        "sortOrder": 3
+      },
+      {
+        "id": "document-template-overseas-exhibition-004",
+        "templateId": "template-overseas-exhibition",
+        "title": "飯店資料",
+        "type": "logistics",
+        "owner": "Operations Team",
+        "defaultStatus": "draft",
+        "relativeDueDays": -120,
+        "sortOrder": 4
+      },
+      {
+        "id": "document-template-overseas-exhibition-005",
+        "templateId": "template-overseas-exhibition",
+        "title": "展位設計稿",
+        "type": "catalog",
+        "owner": "Marketing Team",
+        "defaultStatus": "draft",
+        "relativeDueDays": -60,
+        "sortOrder": 5
+      },
+      {
+        "id": "document-template-overseas-exhibition-006",
+        "templateId": "template-overseas-exhibition",
+        "title": "展品與文宣清單",
+        "type": "catalog",
+        "owner": "Marketing Team",
+        "defaultStatus": "draft",
+        "relativeDueDays": -45,
+        "sortOrder": 6
+      },
+      {
+        "id": "document-template-overseas-exhibition-007",
+        "templateId": "template-overseas-exhibition",
+        "title": "物流與報關文件",
+        "type": "logistics",
+        "owner": "Operations Team",
+        "defaultStatus": "draft",
+        "relativeDueDays": -30,
+        "sortOrder": 7
+      },
+      {
+        "id": "document-template-overseas-exhibition-008",
+        "templateId": "template-overseas-exhibition",
+        "title": "展後成果報告",
+        "type": "follow_up",
+        "owner": "Marketing Team",
+        "defaultStatus": "draft",
+        "relativeDueDays": 14,
+        "sortOrder": 8
+      }
+    ],
+    "createdAt": "2026-07-10T00:00:00.000Z",
+    "updatedAt": "2026-07-10T00:00:00.000Z"
+  }
+]
