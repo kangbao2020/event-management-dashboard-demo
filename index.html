@@ -3,23 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="活動管理平台 Event Management Dashboard MVP">
-  <title>活動管理平台｜Event Management Dashboard</title>
+  <meta name="description" id="app-meta-description" content="管理各類活動、任務、文件與預算，提升團隊工作效率。">
+  <title>工作管理平台｜Work Management Platform</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <div class="app-shell">
     <header class="app-header">
       <div class="app-header__brand">
-        <span class="app-header__brand-main">活動管理平台</span>
-        <span class="app-header__brand-sub">Event Management Dashboard</span>
+        <span class="app-header__brand-main" id="app-brand-name">工作管理平台</span>
+        <span class="app-header__brand-sub" id="app-brand-english-name">Work Management Platform</span>
       </div>
       <div class="app-header__actions">
         <button class="app-header__reset-button" id="reset-data-button" type="button">
           <span>重置資料</span>
           <span>Reset Data</span>
         </button>
-        <div class="app-header__version">v2.0.0</div>
+        <div class="app-header__version" id="app-version">v2.2.0</div>
       </div>
     </header>
 
@@ -28,6 +28,7 @@
         <nav class="sidebar__nav">
           <a class="sidebar__link sidebar__link--active" href="#dashboard-home" data-section="dashboard-home">儀表板（Dashboard）</a>
           <a class="sidebar__link" href="#exhibition-module" data-section="exhibition-module">活動（Events）</a>
+          <a class="sidebar__link" href="#template-module" data-section="template-module">範本（Templates）</a>
           <a class="sidebar__link" href="#task-module" data-section="task-module">任務（Tasks）</a>
           <a class="sidebar__link" href="#document-module" data-section="document-module">文件（Documents）</a>
           <!-- Settings reserved for future version -->
@@ -37,10 +38,10 @@
       <main class="main-content">
         <section class="page-heading" id="dashboard-home" aria-labelledby="page-title">
           <h1 id="page-title">
-            <span class="page-heading__title-main">活動管理平台</span>
-            <span class="page-heading__title-sub">Event Management Dashboard</span>
+            <span class="page-heading__title-main" id="app-page-name">工作管理平台</span>
+            <span class="page-heading__title-sub" id="app-page-english-name">Work Management Platform</span>
           </h1>
-          <p>目前管理案例：海外參展（Currently managing: Overseas Exhibition）</p>
+          <p id="app-description">管理各類活動、任務、文件與預算，提升團隊工作效率。</p>
         </section>
 
         <section class="current-exhibition" id="current-exhibition-panel" aria-live="polite">
@@ -169,6 +170,30 @@
 
           <form class="exhibition-form" id="exhibition-form" aria-label="活動管理表單 Event management form">
             <input type="hidden" id="exhibition-edit-id" value="">
+            <div class="event-template-selector" aria-label="活動範本選擇 Event template selection">
+              <div class="exhibition-form__field event-template-selector__field">
+                <label for="event-template-input">活動範本（Template）</label>
+                <select id="event-template-input">
+                  <option value="" selected>空白活動（Blank Event）</option>
+                </select>
+              </div>
+              <div class="event-template-preview" id="event-template-preview" aria-live="polite">
+                <div class="event-template-preview__summary">
+                  <strong id="event-template-preview-name">未選擇範本（No Template Selected）</strong>
+                  <p id="event-template-preview-description"></p>
+                </div>
+                <dl class="event-template-preview__counts" aria-label="Template preview counts">
+                  <div>
+                    <dt>任務（Tasks）</dt>
+                    <dd id="event-template-preview-task-count">0</dd>
+                  </div>
+                  <div>
+                    <dt>文件（Documents）</dt>
+                    <dd id="event-template-preview-document-count">0</dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
             <div class="exhibition-form__grid">
               <div class="exhibition-form__field exhibition-form__field--name">
                 <label for="exhibition-name-input">活動名稱（Event Name）</label>
@@ -289,6 +314,90 @@
             <div class="empty-state">
               <p class="empty-state__title">尚未選擇活動（No Event Selected）</p>
               <p class="empty-state__description">請從上方活動清單選擇一筆活動查看詳細資訊。</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="template-module" id="template-module" aria-labelledby="template-module-title">
+          <div class="section-header template-module__header">
+            <div>
+              <h2 id="template-module-title">範本管理（Template Management）</h2>
+              <p>查看目前活動範本的狀態、內容摘要與使用情形。</p>
+            </div>
+            <button class="template-create-button" id="template-create-button" type="button" disabled title="範本資料載入中">
+              新增範本（Create Template）
+            </button>
+          </div>
+          <form class="template-form" id="template-form" aria-label="範本管理表單 Template management form" hidden>
+            <input type="hidden" id="template-edit-id" value="">
+            <div class="template-form__heading">
+              <h3 id="template-form-title">新增範本（Create Template）</h3>
+            </div>
+            <div class="template-form__grid">
+              <div class="template-form__field template-form__field--name">
+                <label for="template-name-input">範本名稱（Template Name）*</label>
+                <input type="text" id="template-name-input" required>
+              </div>
+              <div class="template-form__field">
+                <label for="template-event-type-input">活動類型（Event Type）*</label>
+                <select id="template-event-type-input" required>
+                  <option value="Exhibition">Exhibition</option>
+                  <option value="Education">Education</option>
+                  <option value="Annual Meeting">Annual Meeting</option>
+                </select>
+              </div>
+              <div class="template-form__field">
+                <label for="template-date-basis-input">日期基準（Date Basis）*</label>
+                <select id="template-date-basis-input" required>
+                  <option value="startDate">開始日期（Start Date）</option>
+                  <option value="endDate">結束日期（End Date）</option>
+                </select>
+              </div>
+              <div class="template-form__field">
+                <label for="template-status-input">狀態（Status）*</label>
+                <select id="template-status-input" required>
+                  <option value="active">啟用中（Active）</option>
+                  <option value="disabled">已停用（Disabled）</option>
+                </select>
+              </div>
+              <div class="template-form__field template-form__field--description">
+                <label for="template-description-input">說明（Description）</label>
+                <textarea id="template-description-input" rows="3"></textarea>
+              </div>
+            </div>
+            <p class="template-form__message" id="template-form-message" role="alert" hidden></p>
+            <div class="template-form__actions">
+              <button class="template-form-button template-form-button--primary" id="template-submit-button" type="submit">建立範本（Create Template）</button>
+              <button class="template-form-button template-form-button--secondary" id="template-cancel-button" type="button">取消（Cancel）</button>
+            </div>
+          </form>
+          <div class="template-items-management" id="template-items-management" aria-live="polite" hidden></div>
+          <div class="template-summary-grid" aria-label="範本摘要 Template summary">
+            <article class="template-summary-card">
+              <span class="template-summary-card__label">範本總數（Total Templates）</span>
+              <strong class="template-summary-card__value" id="template-summary-total">0</strong>
+            </article>
+            <article class="template-summary-card">
+              <span class="template-summary-card__label">啟用中（Active）</span>
+              <strong class="template-summary-card__value" id="template-summary-active">0</strong>
+            </article>
+            <article class="template-summary-card">
+              <span class="template-summary-card__label">已停用（Disabled）</span>
+              <strong class="template-summary-card__value" id="template-summary-disabled">0</strong>
+            </article>
+            <article class="template-summary-card">
+              <span class="template-summary-card__label">範本任務（Template Tasks）</span>
+              <strong class="template-summary-card__value" id="template-summary-tasks">0</strong>
+            </article>
+            <article class="template-summary-card">
+              <span class="template-summary-card__label">範本文件（Template Documents）</span>
+              <strong class="template-summary-card__value" id="template-summary-documents">0</strong>
+            </article>
+          </div>
+          <div class="template-list" id="template-list" aria-live="polite">
+            <div class="empty-state">
+              <p class="empty-state__title">範本載入中（Loading Templates）</p>
+              <p class="empty-state__description">正在讀取活動範本資料，請稍候。</p>
             </div>
           </div>
         </section>
@@ -497,7 +606,81 @@
           <div id="document-list" class="document-list">文件載入中...</div>
         </section>
 
+        <section class="budget-module" id="budget-module" aria-labelledby="budget-module-title">
+          <div class="section-header">
+            <h2 id="budget-module-title">預算管理（Budgets）</h2>
+            <p>管理目前活動的預估與實際支出。</p>
+          </div>
+          <div class="budget-summary-grid" aria-label="預算摘要 Budget summary">
+            <article class="budget-summary-card">
+              <span class="budget-summary-card__label">預估總額（Estimated Total）</span>
+              <strong class="budget-summary-card__value" id="budget-summary-estimated">NT$ 0</strong>
+            </article>
+            <article class="budget-summary-card">
+              <span class="budget-summary-card__label">實際支出（Actual Total）</span>
+              <strong class="budget-summary-card__value" id="budget-summary-actual">NT$ 0</strong>
+            </article>
+            <article class="budget-summary-card" id="budget-summary-remaining-card">
+              <span class="budget-summary-card__label">剩餘預算（Remaining）</span>
+              <strong class="budget-summary-card__value" id="budget-summary-remaining">NT$ 0</strong>
+            </article>
+            <article class="budget-summary-card">
+              <span class="budget-summary-card__label">預算執行率（Usage Rate）</span>
+              <strong class="budget-summary-card__value" id="budget-summary-usage-rate">0%</strong>
+            </article>
+            <article class="budget-summary-card" id="budget-summary-over-budget-card">
+              <span class="budget-summary-card__label">超支項目數（Over Budget Count）</span>
+              <strong class="budget-summary-card__value" id="budget-summary-over-budget-count">0</strong>
+            </article>
+          </div>
+          <form class="budget-form" id="budget-form" aria-label="預算管理表單 Budget management form">
+            <input type="hidden" id="budget-edit-id" value="">
+            <div class="budget-form__grid">
+              <div class="budget-form__field budget-form__field--title">
+                <label for="budget-title-input">預算項目（Budget Title）</label>
+                <input type="text" id="budget-title-input" placeholder="輸入預算項目" required>
+              </div>
+              <div class="budget-form__field">
+                <label for="budget-category-input">分類（Category）</label>
+                <select id="budget-category-input">
+                  <option value="booth" selected>展位與報名</option>
+                  <option value="travel">交通與住宿</option>
+                  <option value="logistics">物流與報關</option>
+                  <option value="marketing">設計與行銷物料</option>
+                  <option value="other">其他</option>
+                </select>
+              </div>
+              <div class="budget-form__field">
+                <label for="budget-estimated-amount-input">預估金額（Estimated Amount）</label>
+                <input type="number" id="budget-estimated-amount-input" min="0" step="1" value="0" required>
+              </div>
+              <div class="budget-form__field">
+                <label for="budget-actual-amount-input">實際金額（Actual Amount）</label>
+                <input type="number" id="budget-actual-amount-input" min="0" step="1" value="0" required>
+              </div>
+              <div class="budget-form__field">
+                <label for="budget-status-input">狀態（Status）</label>
+                <select id="budget-status-input">
+                  <option value="planned" selected>已規劃</option>
+                  <option value="paid">已支出</option>
+                  <option value="cancelled">已取消</option>
+                </select>
+              </div>
+              <div class="budget-form__field budget-form__field--note">
+                <label for="budget-note-input">備註（Note）</label>
+                <textarea id="budget-note-input" rows="3" placeholder="輸入預算備註"></textarea>
+              </div>
+            </div>
+            <div class="budget-form__actions">
+              <button class="budget-button budget-button--primary" type="submit" id="budget-submit-button">新增預算（Add Budget）</button>
+              <button class="budget-button budget-button--secondary" type="button" id="budget-cancel-edit-button" hidden>取消編輯（Cancel Edit）</button>
+            </div>
+          </form>
+          <div id="budget-list" class="budget-list">預算載入中...</div>
+        </section>
+
         <footer class="app-footer">
+          <span id="app-powered-by">技術支援（Powered by Campbell AI Office）</span>
           <span id="last-updated">最後更新（Last Updated）: --</span>
         </footer>
       </main>
@@ -510,4 +693,6 @@
 
   <script src="js/app.js" defer></script>
 </body>
+</html>
+
 </html>
