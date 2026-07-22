@@ -1,7 +1,7 @@
 var APP_INFO = {
   name: "工作管理平台",
   englishName: "Work Management Platform",
-  version: "v2.2.0",
+  version: "v2.3.0",
   poweredBy: "Campbell AI Office",
   description: "管理各類活動、任務、文件與預算，提升團隊工作效率。"
 };
@@ -1165,6 +1165,28 @@ function scrollToAndHighlightElement(element) {
   applyTemporaryHighlight(element);
 }
 
+function restartNavigationFeedback(element, className, delay) {
+  if (!element) {
+    return;
+  }
+
+  element.classList.remove(className);
+  element.style.setProperty("--navigation-feedback-delay", String(delay || 0) + "ms");
+  void element.offsetWidth;
+  element.classList.add(className);
+}
+
+function showEventNavigationFeedback() {
+  var currentEventHeader = document.querySelector("[data-navigation-feedback-current]");
+  var feedbackSections = document.querySelectorAll("[data-navigation-feedback-section]");
+
+  restartNavigationFeedback(currentEventHeader, "navigation-current-highlight", 0);
+
+  feedbackSections.forEach(function(section, index) {
+    restartNavigationFeedback(section, "navigation-section-highlight", 120 + (index * 200));
+  });
+}
+
 // Dashboard / Current Exhibition
 
 function updateDashboardHomeSummary() {
@@ -1312,6 +1334,13 @@ function updateTodayFocusSummary() {
   }
 }
 
+function updateSidebarProductivitySummary() {
+  setTextContent("#sidebar-overdue-count", taskData.filter(isTaskOverdue).length);
+  setTextContent("#sidebar-due-soon-count", getUpcomingTasks(taskData).length);
+  setTextContent("#sidebar-event-count", exhibitionData.length);
+  setTextContent("#sidebar-template-count", eventTemplateData.length);
+}
+
 function getSelectedExhibition() {
   if (!selectedExhibitionId) {
     return null;
@@ -1342,6 +1371,8 @@ function updateSelectedExhibitionIndicator() {
   var selectedExhibition = getSelectedExhibition();
   var statusElement = document.querySelector("#current-exhibition-status");
 
+  updateSidebarCurrentEventCard(selectedExhibition);
+
   if (!selectedExhibition) {
     setTextContent("#current-exhibition-name", "尚未選擇活動（No Event Selected）");
     setTextContent("#current-exhibition-meta", "請從活動清單選擇一筆活動。");
@@ -1365,6 +1396,25 @@ function updateSelectedExhibitionIndicator() {
   if (statusElement) {
     statusElement.className = "status-badge current-exhibition__badge " + getStatusClass(selectedExhibition.status);
     statusElement.textContent = getStatusText(selectedExhibition.status);
+  }
+}
+
+function updateSidebarCurrentEventCard(selectedExhibition) {
+  var viewButton = document.querySelector("#sidebar-current-event-view");
+  var editButton = document.querySelector("#sidebar-current-event-edit");
+  var hasSelectedExhibition = Boolean(selectedExhibition);
+
+  setTextContent(
+    "#sidebar-current-event-name",
+    hasSelectedExhibition ? getDisplayValue(selectedExhibition.name) : "尚未選擇活動"
+  );
+
+  if (viewButton) {
+    viewButton.disabled = !hasSelectedExhibition;
+  }
+
+  if (editButton) {
+    editButton.disabled = !hasSelectedExhibition;
   }
 }
 
@@ -1416,6 +1466,7 @@ function refreshDashboardViews() {
   updateTodayFocusSummary();
   updateDashboardHomeSummary();
   updateRecentUpdatesSummary();
+  updateSidebarProductivitySummary();
 }
 
 function refreshSelectedModuleSummaries() {
@@ -1472,39 +1523,23 @@ function refreshAllViewsAfterReset() {
   selectedExhibitionId = null;
 
   if (exhibitionData.length) {
-    selectExhibition(exhibitionData[0], false);
+    selectExhibition(exhibitionData[0]);
     return;
   }
 
   resetExhibitionDetail();
 }
 
-function scrollToCurrentExhibition() {
-  var currentExhibitionPanel = document.querySelector("#current-exhibition-panel");
-  var panelTop;
-  var scrollTarget;
+function selectExhibition(exhibition) {
+  var previousSelectedExhibitionId = selectedExhibitionId;
+  var nextSelectedExhibitionId;
 
-  if (!currentExhibitionPanel) {
-    return;
-  }
-
-  panelTop = currentExhibitionPanel.getBoundingClientRect().top + window.scrollY;
-  scrollTarget = Math.max(panelTop - 96, 0);
-
-  window.requestAnimationFrame(function() {
-    window.scrollTo({
-      top: scrollTarget,
-      behavior: "smooth"
-    });
-  });
-}
-
-function selectExhibition(exhibition, shouldScroll) {
   if (!exhibition) {
     return;
   }
 
-  selectedExhibitionId = String(exhibition.id);
+  nextSelectedExhibitionId = String(exhibition.id);
+  selectedExhibitionId = nextSelectedExhibitionId;
   setActiveTableRow(selectedExhibitionId);
   renderExhibitionDetail(exhibition);
   resetExhibitionForm();
@@ -1513,8 +1548,8 @@ function selectExhibition(exhibition, shouldScroll) {
   resetBudgetForm();
   refreshSelectedExhibitionViews();
 
-  if (shouldScroll) {
-    scrollToCurrentExhibition();
+  if (previousSelectedExhibitionId && previousSelectedExhibitionId !== nextSelectedExhibitionId) {
+    showEventNavigationFeedback();
   }
 }
 
@@ -1609,7 +1644,7 @@ function selectExhibitionById(exhibitionId) {
     return null;
   }
 
-  selectExhibition(exhibition, false);
+  selectExhibition(exhibition);
   return exhibition;
 }
 
@@ -1621,7 +1656,7 @@ function navigateToRecentExhibition(exhibitionId) {
   }
 
   clearExhibitionFiltersForDeepLink();
-  selectExhibition(exhibition, false);
+  selectExhibition(exhibition);
   setActiveSidebarLink("exhibition-module");
 
   window.requestAnimationFrame(function() {
@@ -1865,6 +1900,98 @@ function setupSidebarNavigation() {
   updateActiveSidebarFromScroll();
 }
 
+function navigateToSidebarTarget(targetId, focusTargetId) {
+  var target = document.getElementById(targetId);
+  var focusTarget = focusTargetId ? document.getElementById(focusTargetId) : null;
+
+  if (!target) {
+    return;
+  }
+
+  if (targetId === "exhibition-search") {
+    setActiveSidebarLink("exhibition-module");
+  }
+
+  target.scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+  });
+
+  if (focusTarget) {
+    window.setTimeout(function() {
+      focusTarget.focus({ preventScroll: true });
+    }, 350);
+  }
+}
+
+function navigateToCurrentEvent(action) {
+  var selectedExhibition = getSelectedExhibition();
+  var target;
+
+  if (!selectedExhibition) {
+    return;
+  }
+
+  setActiveSidebarLink("exhibition-module");
+
+  if (action === "edit") {
+    startEditExhibition(selectedExhibition.id);
+    target = document.querySelector("#exhibition-form");
+  } else {
+    clearExhibitionFiltersForDeepLink();
+    setActiveTableRow(selectedExhibitionId);
+    target = document.querySelector("#exhibition-detail");
+  }
+
+  window.requestAnimationFrame(function() {
+    scrollToAndHighlightElement(target);
+  });
+}
+
+function setupSidebarProductivity() {
+  var sidebar = document.querySelector(".sidebar");
+  var backToTopButton = document.querySelector("#sidebar-back-to-top");
+
+  if (sidebar) {
+    sidebar.addEventListener("click", function(event) {
+      var scrollLink;
+      var currentEventButton;
+
+      if (!event.target.closest) {
+        return;
+      }
+
+      scrollLink = event.target.closest("[data-sidebar-scroll-target]");
+
+      if (scrollLink) {
+        event.preventDefault();
+        navigateToSidebarTarget(
+          scrollLink.dataset.sidebarScrollTarget,
+          scrollLink.dataset.sidebarFocusTarget
+        );
+        return;
+      }
+
+      currentEventButton = event.target.closest("[data-current-event-action]");
+
+      if (currentEventButton) {
+        navigateToCurrentEvent(currentEventButton.dataset.currentEventAction);
+      }
+    });
+  }
+
+  if (backToTopButton) {
+    backToTopButton.addEventListener("click", scrollPageToTop);
+  }
+}
+
+function scrollPageToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
 function setupBackToTopButton() {
   var backToTopButton = document.querySelector("#back-to-top");
 
@@ -1876,12 +2003,7 @@ function setupBackToTopButton() {
     backToTopButton.classList.toggle("back-to-top-button--visible", window.scrollY > 420);
   }
 
-  backToTopButton.addEventListener("click", function() {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-  });
+  backToTopButton.addEventListener("click", scrollPageToTop);
 
   window.addEventListener("scroll", updateBackToTopVisibility, { passive: true });
   updateBackToTopVisibility();
@@ -1922,6 +2044,166 @@ function getTemplateUsedByEventCount(templateId) {
   return exhibitionData.filter(function(exhibition) {
     return exhibition && String(exhibition.sourceTemplateId || "") === String(templateId || "");
   }).length;
+}
+
+function getTemplateProductivityControls() {
+  return {
+    searchInput: document.querySelector("#template-productivity-search"),
+    statusFilter: document.querySelector("#template-status-filter"),
+    eventTypeFilter: document.querySelector("#template-event-type-filter"),
+    sortSelect: document.querySelector("#template-sort")
+  };
+}
+
+function getTemplateProductivityValues() {
+  var controls = getTemplateProductivityControls();
+
+  return {
+    keyword: controls.searchInput ? controls.searchInput.value.trim().toLowerCase() : "",
+    status: controls.statusFilter ? controls.statusFilter.value : "",
+    eventType: controls.eventTypeFilter ? controls.eventTypeFilter.value : "",
+    sort: controls.sortSelect ? controls.sortSelect.value : "default"
+  };
+}
+
+function searchTemplates(templates, keyword) {
+  if (!keyword) {
+    return templates.slice();
+  }
+
+  return templates.filter(function(template) {
+    var searchableText = [
+      template && template.name,
+      template && template.description,
+      template && template.eventType
+    ].map(function(value) {
+      return String(value || "").toLowerCase();
+    }).join(" ");
+
+    return searchableText.includes(keyword);
+  });
+}
+
+function filterTemplatesByStatus(templates, status) {
+  if (!status) {
+    return templates.slice();
+  }
+
+  return templates.filter(function(template) {
+    return status === "active"
+      ? template && template.isActive === true
+      : template && template.isActive === false;
+  });
+}
+
+function filterTemplatesByEventType(templates, eventType) {
+  if (!eventType) {
+    return templates.slice();
+  }
+
+  return templates.filter(function(template) {
+    return template && template.eventType === eventType;
+  });
+}
+
+function compareTemplateNames(firstTemplate, secondTemplate) {
+  var firstName = String(firstTemplate && firstTemplate.name ? firstTemplate.name : "");
+  var secondName = String(secondTemplate && secondTemplate.name ? secondTemplate.name : "");
+
+  return firstName.localeCompare(secondName, "zh-Hant", { sensitivity: "base" });
+}
+
+function getTemplateUpdatedTimestamp(template) {
+  var timestamp = Date.parse(template && template.updatedAt ? template.updatedAt : "");
+
+  return Number.isFinite(timestamp) ? timestamp : 0;
+}
+
+function sortTemplatesForProductivity(templates, sortOption) {
+  var safeTemplates = Array.isArray(templates) ? templates.slice() : [];
+
+  if (sortOption === "recent") {
+    return safeTemplates.sort(function(firstTemplate, secondTemplate) {
+      return getTemplateUpdatedTimestamp(secondTemplate) - getTemplateUpdatedTimestamp(firstTemplate) ||
+        compareTemplateNames(firstTemplate, secondTemplate);
+    });
+  }
+
+  if (sortOption === "name") {
+    return safeTemplates.sort(compareTemplateNames);
+  }
+
+  if (sortOption === "used") {
+    return safeTemplates.sort(function(firstTemplate, secondTemplate) {
+      return getTemplateUsedByEventCount(secondTemplate.id) - getTemplateUsedByEventCount(firstTemplate.id) ||
+        compareTemplateNames(firstTemplate, secondTemplate);
+    });
+  }
+
+  return getSortedTemplatesForDisplay(safeTemplates);
+}
+
+function getTemplatesForProductivityDisplay(templates) {
+  var safeTemplates = Array.isArray(templates) ? templates : [];
+  var values = getTemplateProductivityValues();
+  var visibleTemplates = searchTemplates(safeTemplates, values.keyword);
+
+  visibleTemplates = filterTemplatesByStatus(visibleTemplates, values.status);
+  visibleTemplates = filterTemplatesByEventType(visibleTemplates, values.eventType);
+
+  return sortTemplatesForProductivity(visibleTemplates, values.sort);
+}
+
+function updateTemplateResultCount(visibleCount, totalCount) {
+  setTextContent(
+    "#template-result-count",
+    "Showing " + visibleCount + " of " + totalCount + " Templates"
+  );
+}
+
+function clearTemplateProductivityFilters() {
+  var controls = getTemplateProductivityControls();
+
+  if (controls.searchInput) {
+    controls.searchInput.value = "";
+  }
+
+  if (controls.statusFilter) {
+    controls.statusFilter.value = "";
+  }
+
+  if (controls.eventTypeFilter) {
+    controls.eventTypeFilter.value = "";
+  }
+
+  if (controls.sortSelect) {
+    controls.sortSelect.value = "default";
+  }
+
+  renderTemplateManagement();
+}
+
+function setupTemplateProductivityControls() {
+  var controls = getTemplateProductivityControls();
+  var templateModule = document.querySelector("#template-module");
+
+  if (controls.searchInput) {
+    controls.searchInput.addEventListener("input", renderTemplateManagement);
+  }
+
+  [controls.statusFilter, controls.eventTypeFilter, controls.sortSelect].forEach(function(control) {
+    if (control) {
+      control.addEventListener("change", renderTemplateManagement);
+    }
+  });
+
+  if (templateModule) {
+    templateModule.addEventListener("click", function(event) {
+      if (event.target.closest && event.target.closest("[data-template-clear-filters]")) {
+        clearTemplateProductivityFilters();
+      }
+    });
+  }
 }
 
 function getTemplateStatusText(template) {
@@ -3055,7 +3337,20 @@ function renderTemplateEmptyState() {
   }
 }
 
-function renderTemplateCards(templates) {
+function renderTemplateFilteredEmptyState() {
+  var templateList = document.querySelector("#template-list");
+
+  if (templateList) {
+    templateList.innerHTML = "" +
+      "<div class=\"empty-state\">" +
+        "<p class=\"empty-state__title\">No Matching Templates</p>" +
+        "<p class=\"empty-state__description\">Please adjust search keywords or filters.</p>" +
+        "<button class=\"template-clear-filters-button\" type=\"button\" data-template-clear-filters>Clear Filters</button>" +
+      "</div>";
+  }
+}
+
+function renderTemplateCards(templates, totalCount) {
   var templateList = document.querySelector("#template-list");
 
   if (!templateList) {
@@ -3063,7 +3358,12 @@ function renderTemplateCards(templates) {
   }
 
   if (!Array.isArray(templates) || !templates.length) {
-    renderTemplateEmptyState();
+    if (totalCount > 0) {
+      renderTemplateFilteredEmptyState();
+    } else {
+      renderTemplateEmptyState();
+    }
+
     return;
   }
 
@@ -3100,10 +3400,13 @@ function renderTemplateCards(templates) {
 
 function renderTemplateManagement() {
   var templates = Array.isArray(eventTemplateData) ? eventTemplateData : [];
+  var visibleTemplates = getTemplatesForProductivityDisplay(templates);
 
   renderTemplateSummary(templates);
-  renderTemplateCards(getSortedTemplatesForDisplay(templates));
+  renderTemplateCards(visibleTemplates, templates.length);
+  updateTemplateResultCount(visibleTemplates.length, templates.length);
   updateTemplateManagementAvailability();
+  updateSidebarProductivitySummary();
 }
 
 // Exhibition Module
@@ -3774,12 +4077,12 @@ function refreshExhibitionModuleViews(exhibition) {
   renderTemplateManagement();
 
   if (exhibition) {
-    selectExhibition(exhibition, false);
+    selectExhibition(exhibition);
     return;
   }
 
   if (getSelectedExhibition()) {
-    selectExhibition(getSelectedExhibition(), false);
+    selectExhibition(getSelectedExhibition());
     return;
   }
 
@@ -3855,7 +4158,7 @@ function startEditExhibition(exhibitionId) {
     return;
   }
 
-  selectExhibition(exhibition, false);
+  selectExhibition(exhibition);
   populateExhibitionForm(exhibition);
 }
 
@@ -3905,7 +4208,7 @@ function refreshAfterExhibitionDelete(deletedExhibitionId, fallbackExhibition) {
 
   if (deletedCurrentExhibition) {
     if (fallbackExhibition) {
-      selectExhibition(fallbackExhibition, false);
+      selectExhibition(fallbackExhibition);
       return;
     }
 
@@ -4035,7 +4338,7 @@ function renderExhibitions(exhibitions) {
         return;
       }
 
-      selectExhibition(selectedExhibition, true);
+      selectExhibition(selectedExhibition);
     });
   });
 
@@ -4307,6 +4610,7 @@ function getMillisecondsUntilNextTaskCountdownRefresh() {
 function refreshTaskCountdownDisplay() {
   if (taskDataLoaded) {
     renderFilteredTasks();
+    refreshDashboardViews();
   }
 }
 
@@ -6168,7 +6472,9 @@ document.addEventListener("DOMContentLoaded", function() {
   setupDocumentManagementControls();
   setupBudgetManagementControls();
   setupTemplateManagementControls();
+  setupTemplateProductivityControls();
   setupSidebarNavigation();
+  setupSidebarProductivity();
   setupRecentUpdatesDeepLinks();
   setupBackToTopButton();
   setupResetDataControl();
@@ -6180,4 +6486,3 @@ document.addEventListener("DOMContentLoaded", function() {
   loadTasks();
   loadDocuments();
 });
-
