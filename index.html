@@ -19,20 +19,98 @@
           <span>重置資料</span>
           <span>Reset Data</span>
         </button>
-        <div class="app-header__version" id="app-version">v2.2.0</div>
+        <div class="app-header__version" id="app-version">v2.3.0</div>
       </div>
     </header>
 
     <div class="app-body">
-      <aside class="sidebar" aria-label="主要功能">
-        <nav class="sidebar__nav">
-          <a class="sidebar__link sidebar__link--active" href="#dashboard-home" data-section="dashboard-home">儀表板（Dashboard）</a>
-          <a class="sidebar__link" href="#exhibition-module" data-section="exhibition-module">活動（Events）</a>
-          <a class="sidebar__link" href="#template-module" data-section="template-module">範本（Templates）</a>
-          <a class="sidebar__link" href="#task-module" data-section="task-module">任務（Tasks）</a>
-          <a class="sidebar__link" href="#document-module" data-section="document-module">文件（Documents）</a>
-          <!-- Settings reserved for future version -->
-        </nav>
+      <aside class="sidebar" aria-label="主要功能與生產力摘要">
+        <div class="sidebar__inner">
+          <nav class="sidebar__nav" aria-label="快捷導覽 Quick Navigation">
+            <span class="sidebar__section-title">快捷導覽（Quick Navigation）</span>
+            <a class="sidebar__link sidebar__link--active" href="#dashboard-home" data-section="dashboard-home">
+              <span class="sidebar__icon" aria-hidden="true">⌂</span>
+              <span>儀表板（Dashboard）</span>
+            </a>
+            <a class="sidebar__link" href="#exhibition-module" data-section="exhibition-module">
+              <span class="sidebar__icon" aria-hidden="true">◫</span>
+              <span>活動（Events）</span>
+            </a>
+            <a class="sidebar__link" href="#template-module" data-section="template-module">
+              <span class="sidebar__icon" aria-hidden="true">▣</span>
+              <span>範本（Templates）</span>
+            </a>
+            <a class="sidebar__link" href="#today-focus-title" data-sidebar-scroll-target="today-focus-title">
+              <span class="sidebar__icon" aria-hidden="true">◎</span>
+              <span>今日焦點（Today's Focus）</span>
+            </a>
+            <a class="sidebar__link" href="#exhibition-search" data-sidebar-scroll-target="exhibition-search" data-sidebar-focus-target="exhibition-search">
+              <span class="sidebar__icon" aria-hidden="true">⌕</span>
+              <span>快速搜尋（Quick Search）</span>
+            </a>
+            <a class="sidebar__link" href="#task-module" data-section="task-module">
+              <span class="sidebar__icon" aria-hidden="true">✓</span>
+              <span>任務（Tasks）</span>
+            </a>
+            <a class="sidebar__link" href="#document-module" data-section="document-module">
+              <span class="sidebar__icon" aria-hidden="true">▤</span>
+              <span>文件（Documents）</span>
+            </a>
+            <button class="sidebar__link sidebar__link--button" id="sidebar-back-to-top" type="button">
+              <span class="sidebar__icon" aria-hidden="true">↑</span>
+              <span>回到頂端（Back to Top）</span>
+            </button>
+            <!-- Settings reserved for future version -->
+          </nav>
+
+          <div class="sidebar__productivity">
+            <section class="sidebar-card sidebar-summary" aria-labelledby="sidebar-summary-title" aria-live="polite">
+              <h2 class="sidebar-card__title" id="sidebar-summary-title">
+                <span class="sidebar-summary__title-main">今日工作</span>
+                <span class="sidebar-summary__title-sub" lang="en">TODAY</span>
+              </h2>
+              <dl class="sidebar-summary__list">
+                <div>
+                  <dt>
+                    <span class="sidebar-summary__label-main">已逾期</span>
+                    <span class="sidebar-summary__label-sub" lang="en">Overdue</span>
+                  </dt>
+                  <dd id="sidebar-overdue-count">0</dd>
+                </div>
+                <div>
+                  <dt>
+                    <span class="sidebar-summary__label-main">即將到期</span>
+                    <span class="sidebar-summary__label-sub" lang="en">Due Soon</span>
+                  </dt>
+                  <dd id="sidebar-due-soon-count">0</dd>
+                </div>
+                <div>
+                  <dt>
+                    <span class="sidebar-summary__label-main">活動</span>
+                    <span class="sidebar-summary__label-sub" lang="en">Events</span>
+                  </dt>
+                  <dd id="sidebar-event-count">0</dd>
+                </div>
+                <div>
+                  <dt>
+                    <span class="sidebar-summary__label-main">範本</span>
+                    <span class="sidebar-summary__label-sub" lang="en">Templates</span>
+                  </dt>
+                  <dd id="sidebar-template-count">0</dd>
+                </div>
+              </dl>
+            </section>
+
+            <section class="sidebar-card sidebar-current-event" aria-labelledby="sidebar-current-event-title" aria-live="polite">
+              <h2 class="sidebar-card__title" id="sidebar-current-event-title">目前活動（Current Event）</h2>
+              <strong class="sidebar-current-event__name" id="sidebar-current-event-name">尚未選擇活動</strong>
+              <div class="sidebar-current-event__actions">
+                <button type="button" id="sidebar-current-event-view" data-current-event-action="view" disabled>查看（View）</button>
+                <button type="button" id="sidebar-current-event-edit" data-current-event-action="edit" disabled>編輯（Edit）</button>
+              </div>
+            </section>
+          </div>
+        </div>
       </aside>
 
       <main class="main-content">
@@ -44,7 +122,7 @@
           <p id="app-description">管理各類活動、任務、文件與預算，提升團隊工作效率。</p>
         </section>
 
-        <section class="current-exhibition" id="current-exhibition-panel" aria-live="polite">
+        <section class="current-exhibition" id="current-exhibition-panel" data-navigation-feedback-current aria-live="polite">
           <div>
             <span class="current-exhibition__label">目前活動（Current Event）</span>
             <strong class="current-exhibition__name" id="current-exhibition-name">尚未選擇活動（No Event Selected）</strong>
@@ -310,7 +388,7 @@
             </table>
           </div>
 
-          <div class="detail-panel" id="exhibition-detail">
+          <div class="detail-panel" id="exhibition-detail" data-navigation-feedback-section="event-detail">
             <div class="empty-state">
               <p class="empty-state__title">尚未選擇活動（No Event Selected）</p>
               <p class="empty-state__description">請從上方活動清單選擇一筆活動查看詳細資訊。</p>
@@ -394,6 +472,44 @@
               <strong class="template-summary-card__value" id="template-summary-documents">0</strong>
             </article>
           </div>
+          <section class="template-productivity-toolbar" aria-label="範本生產力工具列 Template productivity toolbar">
+            <div class="template-productivity-toolbar__controls">
+              <div class="template-productivity-field template-productivity-field--search">
+                <label for="template-productivity-search">範本搜尋（Template Search）</label>
+                <input type="search" id="template-productivity-search" placeholder="搜尋名稱、說明或活動類型">
+              </div>
+              <div class="template-productivity-field">
+                <label for="template-status-filter">狀態（Status）</label>
+                <select id="template-status-filter">
+                  <option value="">全部（All）</option>
+                  <option value="active">啟用中（Active）</option>
+                  <option value="disabled">已停用（Disabled）</option>
+                </select>
+              </div>
+              <div class="template-productivity-field">
+                <label for="template-event-type-filter">活動類型（Event Type）</label>
+                <select id="template-event-type-filter">
+                  <option value="">所有類型（All Types）</option>
+                  <option value="Exhibition">Exhibition</option>
+                  <option value="Education">Education</option>
+                  <option value="Annual Meeting">Annual Meeting</option>
+                </select>
+              </div>
+              <div class="template-productivity-field">
+                <label for="template-sort">排序（Sort）</label>
+                <select id="template-sort">
+                  <option value="default">預設（Default）</option>
+                  <option value="recent">最近更新（Recently Updated）</option>
+                  <option value="name">名稱 A–Z（Name A–Z）</option>
+                  <option value="used">使用次數最多（Most Used）</option>
+                </select>
+              </div>
+              <button class="template-clear-filters-button" type="button" data-template-clear-filters>
+                清除條件（Clear Filters）
+              </button>
+            </div>
+            <p class="template-result-count" id="template-result-count" aria-live="polite">Showing 0 of 0 Templates</p>
+          </section>
           <div class="template-list" id="template-list" aria-live="polite">
             <div class="empty-state">
               <p class="empty-state__title">範本載入中（Loading Templates）</p>
@@ -402,7 +518,7 @@
           </div>
         </section>
 
-        <section class="task-module" id="task-module" aria-labelledby="task-module-title">
+        <section class="task-module" id="task-module" data-navigation-feedback-section="task" aria-labelledby="task-module-title">
           <div class="section-header">
             <div>
               <h2 id="task-module-title">任務管理（Tasks）</h2>
@@ -499,7 +615,7 @@
           <div id="task-list" class="task-list">任務載入中...</div>
         </section>
 
-        <section class="document-module" id="document-module" aria-labelledby="document-module-title">
+        <section class="document-module" id="document-module" data-navigation-feedback-section="document" aria-labelledby="document-module-title">
           <div class="section-header">
             <h2 id="document-module-title">文件管理（Documents）</h2>
             <p>追蹤活動相關文件與參考資料。</p>
@@ -606,7 +722,7 @@
           <div id="document-list" class="document-list">文件載入中...</div>
         </section>
 
-        <section class="budget-module" id="budget-module" aria-labelledby="budget-module-title">
+        <section class="budget-module" id="budget-module" data-navigation-feedback-section="budget" aria-labelledby="budget-module-title">
           <div class="section-header">
             <h2 id="budget-module-title">預算管理（Budgets）</h2>
             <p>管理目前活動的預估與實際支出。</p>
@@ -693,6 +809,4 @@
 
   <script src="js/app.js" defer></script>
 </body>
-</html>
-
 </html>
